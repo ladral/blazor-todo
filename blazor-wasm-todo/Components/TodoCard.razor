@@ -1,0 +1,45 @@
+﻿<section class="section">
+  <div class="card">
+    <header class="card-header">
+      <div class="card-header-title">
+        <span class="tag is-light">#@TodoNumber </span>
+        @Title
+      </div>
+
+      <button type="button" class="button button-status">
+        <span class="icon"><i class="far fa-square"></i></span>
+      </button>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <hr />
+        <small
+          ><time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time></small
+        >
+      </div>
+    </div>
+    <footer class="card-footer">
+      <div class="card-footer-item">
+        <button type="button" class="button is-danger is-outlined">
+          Delete
+        </button>
+      </div>
+      <div class="card-footer-item">
+        <button type="button" class="button is-primary is-outlined">
+          Edit
+        </button>
+      </div>
+    </footer>
+  </div>
+</section>
+
+@code {
+  // Demonstrates how a parent component can supply parameters
+  [Parameter]
+  public string Title { get; set; }
+  
+  [Parameter]
+  public string TodoNumber { get; set; }    
+
+}
