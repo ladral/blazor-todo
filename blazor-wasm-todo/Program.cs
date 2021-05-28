@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ namespace blazor_wasm_todo
                     .ScanAssemblies(typeof(Program).Assembly)
                     .UseReduxDevTools();
             });
+            builder.Services.AddBlazoredLocalStorage();
             
             await builder.Build().RunAsync();
         }
