@@ -1,4 +1,10 @@
 ﻿@page "/"
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using Fluxor
+@using Bunit.Extensions
+
+@inject IDispatcher _dispatcher
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
 
 <section class="hero is-primary">
   <div class="hero-body">
@@ -7,14 +13,40 @@
         TODO List
       </h1>
       <h2 class="subtitle">
-        This is a project to manage your tasks with bulma with react.
+        This is a blazor project to manage your tasks.
       </h2>
     </div>
   </div>
 </section>
+@if (todoItems != null)
+{
+  @foreach (var todo in todoItems)
+  {
+    <TodoCard Title=@todo.title TodoNumber=@todo.id/>
+  }
+}
 
-<input class="input" type="text" placeholder="Text input" @bind="value">
-<button class="button" @onclick="Save">Save</button>
-<button class="button" @onclick="Read">Read</button>
 
-<TodoCard Title="My first Todo!" TodoNumber="12"/>
+@code {
+
+  private List<Todo> todoItems = new();
+  const string StorageKey = "todoItems";
+
+  protected override async Task OnInitializedAsync()
+  {
+    await load();
+  }
+
+  private async Task load()
+  {
+    todoItems = await localStorage.GetItemAsync<List<Todo>>(StorageKey);
+  }
+
+  async Task persist()
+  {
+    Todo todo = new Todo(1, "Einkaufen");
+    todoItems.Add(todo);
+    await localStorage.SetItemAsync(StorageKey, todoItems);
+  }
+
+}

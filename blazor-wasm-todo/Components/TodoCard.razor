@@ -2,7 +2,7 @@
   <div class="card">
     <header class="card-header">
       <div class="card-header-title">
-        <span class="tag is-light">#@TodoNumber </span>
+        <span class="tag is-light">#@TodoNumber.ToString() </span>
         @Title
       </div>
 
@@ -40,6 +40,6 @@
   public string Title { get; set; }
   
   [Parameter]
-  public string TodoNumber { get; set; }    
+  public int TodoNumber { get; set; }    
 
 }
