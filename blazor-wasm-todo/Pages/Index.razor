@@ -18,18 +18,29 @@
     </div>
   </div>
 </section>
-@if (todoItems != null)
-{
-  @foreach (var todo in todoItems)
-  {
-    <TodoCard Title=@todo.title TodoNumber=@todo.getId()/>
-  }
-}
+
+<div class="columns">
+  <div class="column">
+    <button @onclick="addTodo" class="button">Add</button>    
+  </div>
+  <div class="column">
+    Second column
+  </div>
+</div>
+
+
+ @if (todoItems != null)
+ {
+   @foreach (var todo in todoItems)
+   {
+     <TodoCard Title=@todo.title TodoNumber=@todo.id onRemoveTodo=@removeTodo/>
+   }
+ }   
 
 
 @code {
 
-  private List<Todo> todoItems = new();
+  private List<Todo> todoItems;
   const string StorageKey = "todoItems";
 
   protected override async Task OnInitializedAsync()
@@ -39,14 +50,26 @@
 
   private async Task load()
   {
-    todoItems = await localStorage.GetItemAsync<List<Todo>>(StorageKey);
+    todoItems = await localStorage.GetItemAsync<List<Todo>>(StorageKey) ?? new();
   }
 
   async Task persist()
   {
+    await localStorage.SetItemAsync(StorageKey, todoItems);
+  }
+  
+  async Task addTodo()
+  {
     Todo todo = new Todo(1, "Einkaufen");
     todoItems.Add(todo);
-    await localStorage.SetItemAsync(StorageKey, todoItems);
+    Console.WriteLine(todo);
+    persist();
+  }
+  
+  async Task removeTodo(int id)
+  {
+    todoItems.RemoveAll(todo => todo.id == id);
+    persist();
   }
 
 }

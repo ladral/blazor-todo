@@ -9,7 +9,7 @@ namespace blazor_wasm_todo.Store
         public static TodoItemsState OnAddTodo(TodoItemsState state, AddTodo action)
         {
             
-            action.todo.setId(state.Count + 1);
+            action.todo.id = state.Count + 1;
             state.TodoItems.Add(action.todo);
             
             return state with
