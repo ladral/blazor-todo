@@ -52,16 +52,6 @@
     Dispatcher.Dispatch(new LoadFromDB());
   }
 
-  private async Task load()
-  {
-    todoItems = await localStorage.GetItemAsync<List<Todo>>(StorageKey) ?? new();
-  }
-
-  async Task persist()
-  {
-    await localStorage.SetItemAsync(StorageKey, todoItems);
-  }
-  
   async Task addTodo()
   {
     var nextTodoItemId = TodoItemsState.Value.IndexCounter + 1;
