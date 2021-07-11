@@ -2,8 +2,9 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 @using Fluxor
 @using Bunit.Extensions
+@using blazor_wasm_todo.Store
 
-@inject IDispatcher _dispatcher
+@inject IDispatcher Dispatcher
 @inject Blazored.LocalStorage.ILocalStorageService localStorage;
 
 <section class="hero is-primary">
@@ -29,9 +30,9 @@
 </div>
 
 
- @if (todoItems != null)
+ @if (TodoItemsState.Value.TodoItems != null)
  {
-   @foreach (var todo in todoItems)
+   @foreach (var todo in TodoItemsState.Value.TodoItems)
    {
      <TodoCard Title=@todo.title TodoNumber=@todo.id onRemoveTodo=@removeTodo/>
    }
@@ -40,12 +41,15 @@
 
 @code {
 
+  [Inject]
+  private IState<TodoItemsState> TodoItemsState { get; set; }
+  
   private List<Todo> todoItems;
   const string StorageKey = "todoItems";
 
   protected override async Task OnInitializedAsync()
   {
-    await load();
+    Dispatcher.Dispatch(new LoadFromDB());
   }
 
   private async Task load()
@@ -60,16 +64,16 @@
   
   async Task addTodo()
   {
-    Todo todo = new Todo(1, "Einkaufen");
-    todoItems.Add(todo);
-    Console.WriteLine(todo);
-    persist();
+    var nextTodoItemId = TodoItemsState.Value.IndexCounter + 1;
+    var newTodoItem = new Todo(nextTodoItemId, "Einkaufen");
+    Dispatcher.Dispatch(new AddTodo(newTodoItem));
+    Dispatcher.Dispatch(new PersistToDB(TodoItemsState.Value));
   }
   
   async Task removeTodo(int id)
   {
-    todoItems.RemoveAll(todo => todo.id == id);
-    persist();
+    Dispatcher.Dispatch(new RemoveTodo(id));
+    Dispatcher.Dispatch(new PersistToDB(TodoItemsState.Value));
   }
 
 }

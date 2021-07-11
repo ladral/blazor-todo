@@ -6,7 +6,7 @@ namespace blazor_wasm_todo.Store
 {
     public record TodoItemsState
     {
-        public int Count { get; init; }
+        public int IndexCounter { get; init; }
         public List<Todo> TodoItems { get; init; }
     }
 
@@ -18,7 +18,7 @@ namespace blazor_wasm_todo.Store
         {
             return new TodoItemsState
             {
-                Count = 0,
+                IndexCounter = 0,
                 TodoItems = new List<Todo>()
             };
         }

@@ -4,7 +4,7 @@ namespace blazor_wasm_todo.Store
 {
     public record AddTodo
     {
-        public Todo todo { get; set; }      
+        public Todo todo { get; }      
 
         public AddTodo(Todo todo)
         {
