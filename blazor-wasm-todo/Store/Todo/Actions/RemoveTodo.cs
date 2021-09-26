@@ -1,4 +1,5 @@
-﻿namespace blazor_wasm_todo.Store
+﻿
+namespace blazor_wasm_todo.Store
 {
     public class RemoveTodo
     {

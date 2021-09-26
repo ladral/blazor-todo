@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using blazor_wasm_todo.Data;
 using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -22,7 +23,7 @@ namespace blazor_wasm_todo
             builder.Services
                 .AddScoped(
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
-
+            
             // Add Fluxor
             builder.Services.AddFluxor(config =>
             {
@@ -30,7 +31,9 @@ namespace blazor_wasm_todo
                     .ScanAssemblies(typeof(Program).Assembly)
                     .UseReduxDevTools();
             });
+            
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddScoped<IDataStorage, LocalDataStorage>();
             
             await builder.Build().RunAsync();
         }

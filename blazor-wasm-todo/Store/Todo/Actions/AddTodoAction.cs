@@ -2,11 +2,11 @@
 
 namespace blazor_wasm_todo.Store
 {
-    public record AddTodo
+    public class AddTodoAction
     {
         public Todo todo { get; }      
 
-        public AddTodo(Todo todo)
+        public AddTodoAction(Todo todo)
         {
             this.todo = todo;
         }
