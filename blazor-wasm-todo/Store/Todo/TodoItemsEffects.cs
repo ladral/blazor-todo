@@ -32,5 +32,12 @@ namespace blazor_wasm_todo.Store
             Todo todo = await _storage.saveTodo(action.todo);
             dispatcher.Dispatch(new AddTodoAction(todo));
         }
+        
+        [EffectMethod]
+        public async Task OnDeleteTodo(DeleteTodoAction action, IDispatcher dispatcher)
+        {
+            await _storage.deleteTodo(action.Id);
+            dispatcher.Dispatch(new RemoveTodoAction(action.Id));
+        }
     }
 }

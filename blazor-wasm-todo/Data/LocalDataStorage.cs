@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using blazor_wasm_todo.Shared;
 using Blazored.LocalStorage;
@@ -8,43 +9,53 @@ namespace blazor_wasm_todo.Data
 {
     public class LocalDataStorage : IDataStorage
     {
-        private readonly ILocalStorageService LocalStorage;
+        private readonly ILocalStorageService _localStorage;
         private const string TodoItemsStorageKey = "todoItems";
-        private const string IndexCounterStorageKey = "indexCounter";
-        private int indexCounter { get; set; }
-
+        private int NextTodoItemId { get; set; }
         private List<Todo> TodoItems { get; set; }          
 
         public LocalDataStorage(ILocalStorageService localStorage)
         {
-            LocalStorage = localStorage;
+            _localStorage = localStorage;
         }
         
         public async Task<List<Todo>> Load()
         {
-            TodoItems = await LocalStorage.GetItemAsync<List<Todo>>(TodoItemsStorageKey) ?? new();
-            
+            TodoItems = await _localStorage.GetItemAsync<List<Todo>>(TodoItemsStorageKey) ?? new();
+            NextTodoItemId = EvaluateNextTodoItemId(TodoItems);
             return TodoItems;
         }
 
         public async Task Persist(List<Todo> todoItems)
         {
-            await LocalStorage.SetItemAsync(TodoItemsStorageKey, todoItems);
-            await LocalStorage.SetItemAsync(IndexCounterStorageKey, IndexCounterStorageKey);
+            await _localStorage.SetItemAsync(TodoItemsStorageKey, todoItems);
         }
 
         public async Task<Todo> saveTodo(Todo todo)
         {
-            indexCounter++;
-            todo.id = indexCounter;
+            todo.id = NextTodoItemId;
             TodoItems.Add(todo);
             await Persist(TodoItems);
+            NextTodoItemId = EvaluateNextTodoItemId(TodoItems);
             return todo;
         }
 
-        public async Task<int> deleteTodo(int id)
+        public async Task deleteTodo(int id)
         {
-            throw new System.NotImplementedException();
+            TodoItems.RemoveAll(todo => todo.id == id);
+            await Persist(TodoItems);
+            NextTodoItemId = EvaluateNextTodoItemId(TodoItems);
+        }
+
+        private static int EvaluateNextTodoItemId(List<Todo> todoItems)
+        {
+            if (todoItems == null) throw new ArgumentNullException(nameof(todoItems));
+            var highestId = todoItems
+                .Select(todo => todo.id)
+                .DefaultIfEmpty(0)
+                .Max();
+            
+            return ++highestId;
         }
     }
 }

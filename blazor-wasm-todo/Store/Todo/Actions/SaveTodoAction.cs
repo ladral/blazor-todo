@@ -2,7 +2,7 @@
 
 namespace blazor_wasm_todo.Store
 {
-    public record SaveTodoAction
+    public class SaveTodoAction
     {
         public Todo todo { get; }      
 

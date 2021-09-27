@@ -12,6 +12,6 @@ namespace blazor_wasm_todo.Data
 
         public Task<Todo> saveTodo(Todo todo);
         
-        public Task<int> deleteTodo(int id);
+        public Task deleteTodo(int id);
     }
 }

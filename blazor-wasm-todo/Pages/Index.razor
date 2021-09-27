@@ -54,7 +54,7 @@
   
   async Task removeTodo(int id)
   {
-    Dispatcher.Dispatch(new RemoveTodo(id));
+    Dispatcher.Dispatch(new DeleteTodoAction(id));
   }
 
 }

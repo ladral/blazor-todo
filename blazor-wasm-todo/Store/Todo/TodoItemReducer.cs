@@ -27,7 +27,7 @@ namespace blazor_wasm_todo.Store
         }
         
         [ReducerMethod]
-        public static TodoItemsState OnRemoveTodo(TodoItemsState state, RemoveTodo action)
+        public static TodoItemsState OnRemoveTodo(TodoItemsState state, RemoveTodoAction action)
         {
             state.TodoItems.RemoveAll(todo => todo.id == action.Id);
             return state with
