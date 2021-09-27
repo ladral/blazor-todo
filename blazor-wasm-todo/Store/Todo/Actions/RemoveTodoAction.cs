@@ -1,12 +1,12 @@
 ﻿namespace blazor_wasm_todo.Store
 {
-    public class RemoveTodo
+    public class RemoveTodoAction
     {
         public int Id { get; }
 
-        public RemoveTodo(int id)
+        public RemoveTodoAction(int id)
         {
-            Id = id;
+            this.Id = id;
         }
     }
 }

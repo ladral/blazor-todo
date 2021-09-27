@@ -1,38 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using blazor_wasm_todo.Data;
 using blazor_wasm_todo.Shared;
 using Blazored.LocalStorage;
 using Fluxor;
+using Microsoft.AspNetCore.Components;
 
 namespace blazor_wasm_todo.Store
 {
     public class TodoItemsEffects
     {
+        private readonly IDataStorage _storage;
+        private List<Todo> todoItems;
         
-        private readonly ILocalStorageService LocalStorage;
-        private const string TodoItemsStorageKey = "todoItems";
-        private const string IndexCounterStorageKey = "indexCounter";
-        
-        public TodoItemsEffects(ILocalStorageService localStorage)
+        public TodoItemsEffects(ILocalStorageService localStorage, IDataStorage storage)
         {
-            LocalStorage = localStorage;
+            _storage = storage;
         }
         
         [EffectMethod]
-        public async Task OnLoad(LoadFromDB action, IDispatcher dispatcher)
+        public async Task OnLoadFromStorage(LoadFromStorage action, IDispatcher dispatcher)
         {
-            var todoItems = await LocalStorage.GetItemAsync<List<Todo>>(TodoItemsStorageKey) ?? new();
-            var indexCounter = await LocalStorage.GetItemAsync<int>(IndexCounterStorageKey);
-            Console.WriteLine(indexCounter);
-            dispatcher.Dispatch(new InitializeStore(todoItems, indexCounter));
+            todoItems = await _storage.Load();
+            dispatcher.Dispatch(new InitializeStore(todoItems));
         }
 
         [EffectMethod]
-        public async Task OnPersist(PersistToDB action, IDispatcher dispatcher)
+        public async Task OnSaveTodo(SaveTodoAction action, IDispatcher dispatcher)
         {
-            await LocalStorage.SetItemAsync(TodoItemsStorageKey, action.TodoItemsState.TodoItems);
-            await LocalStorage.SetItemAsync(IndexCounterStorageKey, action.TodoItemsState.IndexCounter);
+            Todo todo = await _storage.saveTodo(action.todo);
+            dispatcher.Dispatch(new AddTodoAction(todo));
+        }
+        
+        [EffectMethod]
+        public async Task OnDeleteTodo(DeleteTodoAction action, IDispatcher dispatcher)
+        {
+            await _storage.deleteTodo(action.Id);
+            dispatcher.Dispatch(new RemoveTodoAction(action.Id));
         }
     }
 }

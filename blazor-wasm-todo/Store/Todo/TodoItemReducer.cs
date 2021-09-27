@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using blazor_wasm_todo.Shared;
 using Fluxor;
 
 namespace blazor_wasm_todo.Store
@@ -10,34 +12,27 @@ namespace blazor_wasm_todo.Store
         {
             return state with
             {
-                IndexCounter = action.IndexCounter,
-                TodoItems = action.TodoItems
+                TodoItems =  new List<Todo>(action.TodoItems)
             };
         }
 
         [ReducerMethod]
-        public static TodoItemsState OnAddTodo(TodoItemsState state, AddTodo action)
+        public static TodoItemsState OnAddTodo(TodoItemsState state, AddTodoAction action)
         {
-            
-            action.todo.id = state.IndexCounter + 1;
             state.TodoItems.Add(action.todo);
-
             return state with
             {
-                IndexCounter = state.IndexCounter + 1,
-                TodoItems = state.TodoItems
+                TodoItems = new List<Todo>(state.TodoItems)
             };
         }
         
         [ReducerMethod]
-        public static TodoItemsState OnRemoveTodo(TodoItemsState state, RemoveTodo action)
+        public static TodoItemsState OnRemoveTodo(TodoItemsState state, RemoveTodoAction action)
         {
             state.TodoItems.RemoveAll(todo => todo.id == action.Id);
-
             return state with
             {
-                IndexCounter = state.IndexCounter,
-                TodoItems = state.TodoItems
+                TodoItems = new List<Todo>(state.TodoItems)
             };
         }
         
