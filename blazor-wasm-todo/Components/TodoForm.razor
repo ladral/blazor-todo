@@ -1,0 +1,37 @@
+﻿@using blazor_wasm_todo.Store
+<div class="field">
+  <label class="label">Titel</label>
+  <div class="control">
+    <input class="input @(isTodoTitleValid ? "" : "is-danger")" type="email" placeholder="Titel" @bind="@title">
+  </div>
+  @if (!isTodoTitleValid)
+  {
+    <p class="help is-danger">Ungültiger Titel</p>
+  }
+</div>
+
+<button @onclick="@AddTodo" class="button">Add</button>
+
+@code {
+  [Parameter] 
+  public EventCallback<string> addTodoCallback { get; set; }
+
+  private string title;
+
+  private async Task AddTodo()
+  {
+    isTodoTitleValid = validateTodoTitle(title);
+    if (isTodoTitleValid)
+    {
+      await addTodoCallback.InvokeAsync(title);
+      title = "";
+    }
+  }
+
+  private bool validateTodoTitle(string title)
+  {
+    return !string.IsNullOrEmpty(title);
+  }
+  
+  private bool isTodoTitleValid = true;
+}
