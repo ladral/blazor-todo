@@ -1,6 +1,6 @@
 ﻿namespace blazor_wasm_todo.Store
 {
-    public class LoadFromStorage
+    public class LoadFromStorageAction
     {
         
     }

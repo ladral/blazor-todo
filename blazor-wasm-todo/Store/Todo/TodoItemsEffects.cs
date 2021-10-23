@@ -20,7 +20,7 @@ namespace blazor_wasm_todo.Store
         }
         
         [EffectMethod]
-        public async Task OnLoadFromStorage(LoadFromStorage action, IDispatcher dispatcher)
+        public async Task OnLoadFromStorage(LoadFromStorageAction action, IDispatcher dispatcher)
         {
             todoItems = await _storage.Load();
             dispatcher.Dispatch(new InitializeStore(todoItems));

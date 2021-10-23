@@ -44,7 +44,7 @@
 
   protected override async Task OnInitializedAsync()
   {
-    Dispatcher.Dispatch(new LoadFromStorage());
+    Dispatcher.Dispatch(new LoadFromStorageAction());
   }
 
   async Task addTodo()
