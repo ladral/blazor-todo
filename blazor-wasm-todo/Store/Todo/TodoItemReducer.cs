@@ -8,7 +8,7 @@ namespace blazor_wasm_todo.Store
     public static class TodoItemReducer
     {
         [ReducerMethod]
-        public static TodoItemsState OnInitializeStore(TodoItemsState state, InitializeStore action)
+        public static TodoItemsState OnInitializeStore(TodoItemsState state, InitializeStoreAction action)
         {
             return state with
             {
