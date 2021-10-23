@@ -14,16 +14,16 @@ namespace blazor_wasm_todo.Store
         private readonly IDataStorage _storage;
         private List<Todo> todoItems;
         
-        public TodoItemsEffects(ILocalStorageService localStorage, IDataStorage storage)
+        public TodoItemsEffects(IDataStorage storage)
         {
             _storage = storage;
         }
         
         [EffectMethod]
-        public async Task OnLoadFromStorage(LoadFromStorage action, IDispatcher dispatcher)
+        public async Task OnLoadFromStorage(LoadFromStorageAction action, IDispatcher dispatcher)
         {
             todoItems = await _storage.Load();
-            dispatcher.Dispatch(new InitializeStore(todoItems));
+            dispatcher.Dispatch(new InitializeStoreAction(todoItems));
         }
 
         [EffectMethod]
