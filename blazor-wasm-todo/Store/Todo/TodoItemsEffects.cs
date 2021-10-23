@@ -14,7 +14,7 @@ namespace blazor_wasm_todo.Store
         private readonly IDataStorage _storage;
         private List<Todo> todoItems;
         
-        public TodoItemsEffects(ILocalStorageService localStorage, IDataStorage storage)
+        public TodoItemsEffects(IDataStorage storage)
         {
             _storage = storage;
         }
