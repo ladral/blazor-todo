@@ -18,15 +18,7 @@
   </div>
 </section>
 
-<div class="columns">
-  <div class="column">
-    <button @onclick="addTodo" class="button">Add</button>    
-  </div>
-  <div class="column">
-    Second column
-  </div>
-</div>
-
+<TodoForm addTodoCallback="@addTodo"></TodoForm>
 
  @if (TodoItemsState.Value.TodoItems != null)
  {
@@ -34,8 +26,7 @@
    {
      <TodoCard Title=@todo.title TodoNumber=@todo.id onRemoveTodo=@removeTodo/>
    }
- }   
-
+ }
 
 @code {
 
@@ -47,9 +38,9 @@
     Dispatcher.Dispatch(new LoadFromStorageAction());
   }
 
-  async Task addTodo()
+  async Task addTodo(string title)
   {
-    Dispatcher.Dispatch(new SaveTodoAction(new Todo(0, "My Todo")));
+    Dispatcher.Dispatch(new SaveTodoAction(new Todo(0, title)));
   }
   
   async Task removeTodo(int id)
