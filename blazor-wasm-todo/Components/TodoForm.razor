@@ -1,25 +1,35 @@
 ﻿@using blazor_wasm_todo.Store
 
 <div class="field px-5 pt-5">
-   <div class="control">
-     <input class="input @(isTodoTitleValid ? "" : "is-danger")" type="text" placeholder="Titel" @bind="@title">
-   </div>
-   @if (!isTodoTitleValid)
-   {
-     <p class="help is-danger">Ungültiger Titel</p>
-   }
-   else
-   {
-     <p class="py-2"></p>
-   }
-   <button @onclick="@AddTodo" class="button">Add</button>
- </div>
+  <div class="control">
+    <input class="input @(isTodoTitleValid ? "" : "is-danger")" type="text" placeholder="Titel" @bind="@title">
+  </div>
+  @if (!isTodoTitleValid)
+  {
+    <p class="help is-danger">Invalid Title</p>
+  }
+  else
+  {
+    <p class="py-2"></p>
+  }
+</div>
+<div class="field px-5">
+  <div class="control">
+    <textarea class="textarea is-small has-fixed-size" placeholder="Description" @bind="@description"></textarea>
+  </div>
+</div>
+<div class="field px-5">
+  <div class="control">
+    <button @onclick="@AddTodo" class="button">Add</button>
+  </div>
+</div>
 
 @code {
   [Parameter] 
   public EventCallback<string> addTodoCallback { get; set; }
 
   private string title;
+  private string description;
 
   private async Task AddTodo()
   {
