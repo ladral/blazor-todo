@@ -33,7 +33,7 @@ namespace blazor_wasm_todo
             });
             
             builder.Services.AddBlazoredLocalStorage();
-            builder.Services.AddScoped<IDataStorage, LocalDataStorage>();
+            builder.Services.AddScoped<ITodoService, TodoServiceLocalStore>();
             
             await builder.Build().RunAsync();
         }

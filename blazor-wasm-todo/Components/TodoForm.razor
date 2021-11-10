@@ -1,33 +1,45 @@
 ﻿@using blazor_wasm_todo.Store
 
 <div class="field px-5 pt-5">
-   <div class="control">
-     <input class="input @(isTodoTitleValid ? "" : "is-danger")" type="text" placeholder="Titel" @bind="@title">
-   </div>
-   @if (!isTodoTitleValid)
-   {
-     <p class="help is-danger">Ungültiger Titel</p>
-   }
-   else
-   {
-     <p class="py-2"></p>
-   }
-   <button @onclick="@AddTodo" class="button">Add</button>
- </div>
+  <div class="control">
+    <input class="input @(_isTodoTitleValid ? "" : "is-danger")" type="text" placeholder="Titel" @bind="@_title">
+  </div>
+  @if (!_isTodoTitleValid)
+  {
+    <p class="help is-danger">Invalid Title</p>
+  }
+  else
+  {
+    <p class="py-2"></p>
+  }
+</div>
+<div class="field px-5">
+  <div class="control">
+    <textarea class="textarea is-small has-fixed-size" placeholder="Description" @bind="@_description"></textarea>
+  </div>
+</div>
+<div class="field px-5">
+  <div class="control">
+    <button @onclick="@AddTodo" class="button">Add</button>
+  </div>
+</div>
 
 @code {
   [Parameter] 
-  public EventCallback<string> addTodoCallback { get; set; }
+  public EventCallback<Todo> AddTodoCallback { get; set; }
 
-  private string title;
-
+  private string _title;
+  private string _description;
+  private bool _isTodoTitleValid = true;
+  
   private async Task AddTodo()
   {
-    isTodoTitleValid = validateTodoTitle(title);
-    if (isTodoTitleValid)
+    _isTodoTitleValid = validateTodoTitle(_title);
+    if (_isTodoTitleValid)
     {
-      await addTodoCallback.InvokeAsync(title);
-      title = "";
+      await AddTodoCallback.InvokeAsync(new Todo(0, _title, _description));
+      _title = "";
+      _description = "";
     }
   }
 
@@ -35,6 +47,4 @@
   {
     return !string.IsNullOrEmpty(title);
   }
-  
-  private bool isTodoTitleValid = true;
 }

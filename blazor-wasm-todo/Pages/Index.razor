@@ -3,7 +3,7 @@
 @using Fluxor
 @using blazor_wasm_todo.Store
 
-@inject IDispatcher Dispatcher
+@inject IDispatcher _dispatcher
 
 <section class="hero is-primary">
   <div class="hero-body">
@@ -18,13 +18,13 @@
   </div>
 </section>
 
-<TodoForm addTodoCallback="@addTodo"></TodoForm>
+<TodoForm AddTodoCallback="@AddTodo"></TodoForm>
 
  @if (TodoItemsState.Value.TodoItems != null)
  {
    @foreach (var todo in TodoItemsState.Value.TodoItems)
    {
-     <TodoCard Title=@todo.title TodoNumber=@todo.id onRemoveTodo=@removeTodo/>
+     <TodoCard Todo=@todo OnRemoveTodo=@RemoveTodo/>
    }
  }
 
@@ -35,17 +35,16 @@
 
   protected override async Task OnInitializedAsync()
   {
-    Dispatcher.Dispatch(new LoadFromStorageAction());
+    _dispatcher.Dispatch(new LoadFromStorageAction());
   }
 
-  async Task addTodo(string title)
+  async Task AddTodo(Todo todo)
   {
-    Dispatcher.Dispatch(new SaveTodoAction(new Todo(0, title)));
+    _dispatcher.Dispatch(new SaveTodoAction(todo));
   }
   
-  async Task removeTodo(int id)
+  async Task RemoveTodo(int id)
   {
-    Dispatcher.Dispatch(new DeleteTodoAction(id));
+    _dispatcher.Dispatch(new DeleteTodoAction(id));
   }
-
 }

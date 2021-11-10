@@ -2,12 +2,14 @@
 {
     public class Todo
     {
-        public int id { get; set; }
-        public string title { get; }   
-        public Todo(int id, string title)
+        public int Id { get; set; }
+        public string Title { get; }
+        public string Description { get; }
+        public Todo(int id, string title, string description)
         {
-            this.id = id;
-            this.title = title;
+            this.Id = id;
+            this.Title = title;
+            this.Description = description;
         }
     }
 }
