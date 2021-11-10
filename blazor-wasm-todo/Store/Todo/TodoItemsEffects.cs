@@ -11,10 +11,10 @@ namespace blazor_wasm_todo.Store
 {
     public class TodoItemsEffects
     {
-        private readonly IDataStorage _storage;
+        private readonly ITodoService _storage;
         private List<Todo> todoItems;
         
-        public TodoItemsEffects(IDataStorage storage)
+        public TodoItemsEffects(ITodoService storage)
         {
             _storage = storage;
         }
@@ -29,14 +29,14 @@ namespace blazor_wasm_todo.Store
         [EffectMethod]
         public async Task OnSaveTodo(SaveTodoAction action, IDispatcher dispatcher)
         {
-            Todo todo = await _storage.saveTodo(action.todo);
+            Todo todo = await _storage.SaveTodo(action.todo);
             dispatcher.Dispatch(new AddTodoAction(todo));
         }
         
         [EffectMethod]
         public async Task OnDeleteTodo(DeleteTodoAction action, IDispatcher dispatcher)
         {
-            await _storage.deleteTodo(action.Id);
+            await _storage.DeleteTodo(action.Id);
             dispatcher.Dispatch(new RemoveTodoAction(action.Id));
         }
     }

@@ -4,14 +4,12 @@ using blazor_wasm_todo.Shared;
 
 namespace blazor_wasm_todo.Data
 {
-    public interface IDataStorage
+    public interface ITodoService
     {
         public Task<List<Todo>> Load();
 
-        public Task Persist(List<Todo> todoItems);
-
-        public Task<Todo> saveTodo(Todo todo);
+        public Task<Todo> SaveTodo(Todo todo);
         
-        public Task deleteTodo(int id);
+        public Task DeleteTodo(int id);
     }
 }

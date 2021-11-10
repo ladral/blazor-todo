@@ -7,14 +7,14 @@ using Blazored.LocalStorage;
 
 namespace blazor_wasm_todo.Data
 {
-    public class LocalDataStorage : IDataStorage
+    public class TodoServiceLocalStore : ITodoService
     {
         private readonly ILocalStorageService _localStorage;
         private const string TodoItemsStorageKey = "todoItems";
         private int NextTodoItemId { get; set; }
         private List<Todo> TodoItems { get; set; }          
 
-        public LocalDataStorage(ILocalStorageService localStorage)
+        public TodoServiceLocalStore(ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
         }
@@ -26,12 +26,12 @@ namespace blazor_wasm_todo.Data
             return TodoItems;
         }
 
-        public async Task Persist(List<Todo> todoItems)
+        private async Task Persist(List<Todo> todoItems)
         {
             await _localStorage.SetItemAsync(TodoItemsStorageKey, todoItems);
         }
 
-        public async Task<Todo> saveTodo(Todo todo)
+        public async Task<Todo> SaveTodo(Todo todo)
         {
             todo.id = NextTodoItemId;
             TodoItems.Add(todo);
@@ -40,7 +40,7 @@ namespace blazor_wasm_todo.Data
             return todo;
         }
 
-        public async Task deleteTodo(int id)
+        public async Task DeleteTodo(int id)
         {
             TodoItems.RemoveAll(todo => todo.id == id);
             await Persist(TodoItems);
