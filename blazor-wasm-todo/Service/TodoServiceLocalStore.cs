@@ -33,7 +33,7 @@ namespace blazor_wasm_todo.Data
 
         public async Task<Todo> Save(Todo todo)
         {
-            todo.id = NextTodoItemId;
+            todo.Id = NextTodoItemId;
             TodoItems.Add(todo);
             await Persist(TodoItems);
             NextTodoItemId = EvaluateNextTodoItemId(TodoItems);
@@ -42,7 +42,7 @@ namespace blazor_wasm_todo.Data
 
         public async Task Delete(int id)
         {
-            TodoItems.RemoveAll(todo => todo.id == id);
+            TodoItems.RemoveAll(todo => todo.Id == id);
             await Persist(TodoItems);
             NextTodoItemId = EvaluateNextTodoItemId(TodoItems);
         }
@@ -51,7 +51,7 @@ namespace blazor_wasm_todo.Data
         {
             if (todoItems == null) throw new ArgumentNullException(nameof(todoItems));
             var highestId = todoItems
-                .Select(todo => todo.id)
+                .Select(todo => todo.Id)
                 .DefaultIfEmpty(0)
                 .Max();
             

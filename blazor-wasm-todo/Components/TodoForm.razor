@@ -2,9 +2,9 @@
 
 <div class="field px-5 pt-5">
   <div class="control">
-    <input class="input @(isTodoTitleValid ? "" : "is-danger")" type="text" placeholder="Titel" @bind="@title">
+    <input class="input @(_isTodoTitleValid ? "" : "is-danger")" type="text" placeholder="Titel" @bind="@_title">
   </div>
-  @if (!isTodoTitleValid)
+  @if (!_isTodoTitleValid)
   {
     <p class="help is-danger">Invalid Title</p>
   }
@@ -15,7 +15,7 @@
 </div>
 <div class="field px-5">
   <div class="control">
-    <textarea class="textarea is-small has-fixed-size" placeholder="Description" @bind="@description"></textarea>
+    <textarea class="textarea is-small has-fixed-size" placeholder="Description" @bind="@_description"></textarea>
   </div>
 </div>
 <div class="field px-5">
@@ -26,18 +26,20 @@
 
 @code {
   [Parameter] 
-  public EventCallback<string> addTodoCallback { get; set; }
+  public EventCallback<Todo> AddTodoCallback { get; set; }
 
-  private string title;
-  private string description;
-
+  private string _title;
+  private string _description;
+  private bool _isTodoTitleValid = true;
+  
   private async Task AddTodo()
   {
-    isTodoTitleValid = validateTodoTitle(title);
-    if (isTodoTitleValid)
+    _isTodoTitleValid = validateTodoTitle(_title);
+    if (_isTodoTitleValid)
     {
-      await addTodoCallback.InvokeAsync(title);
-      title = "";
+      await AddTodoCallback.InvokeAsync(new Todo(0, _title, _description));
+      _title = "";
+      _description = "";
     }
   }
 
@@ -45,6 +47,4 @@
   {
     return !string.IsNullOrEmpty(title);
   }
-  
-  private bool isTodoTitleValid = true;
 }

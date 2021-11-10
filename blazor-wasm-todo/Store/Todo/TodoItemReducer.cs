@@ -19,7 +19,7 @@ namespace blazor_wasm_todo.Store
         [ReducerMethod]
         public static TodoItemsState OnAddTodo(TodoItemsState state, AddTodoAction action)
         {
-            state.TodoItems.Add(action.todo);
+            state.TodoItems.Add(action.Todo);
             return state with
             {
                 TodoItems = new List<Todo>(state.TodoItems)
@@ -29,7 +29,7 @@ namespace blazor_wasm_todo.Store
         [ReducerMethod]
         public static TodoItemsState OnRemoveTodo(TodoItemsState state, RemoveTodoAction action)
         {
-            state.TodoItems.RemoveAll(todo => todo.id == action.Id);
+            state.TodoItems.RemoveAll(todo => todo.Id == action.Id);
             return state with
             {
                 TodoItems = new List<Todo>(state.TodoItems)

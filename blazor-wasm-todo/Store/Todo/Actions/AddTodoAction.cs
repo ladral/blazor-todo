@@ -4,11 +4,11 @@ namespace blazor_wasm_todo.Store
 {
     public class AddTodoAction
     {
-        public Todo todo { get; }      
+        public Todo Todo { get; }      
 
         public AddTodoAction(Todo todo)
         {
-            this.todo = todo;
+            this.Todo = todo;
         }
     }
 }

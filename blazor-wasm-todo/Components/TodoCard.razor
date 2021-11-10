@@ -2,8 +2,8 @@
   <div class="card">
     <header class="card-header">
       <div class="card-header-title">
-        <span class="tag is-light">@TodoNumber.ToString()</span>
-        @Title
+        <span class="tag is-light">@Todo.Id.ToString()</span>
+        @Todo.Title
       </div>
 
       <button type="button" class="button button-status">
@@ -12,7 +12,7 @@
     </header>
     <div class="card-content">
       <div class="content">
-        <p>description</p>
+        <p>@Todo.Description</p>
         <hr />
         <small>
           <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
@@ -21,7 +21,7 @@
     </div>
     <footer class="card-footer">
       <div class="card-footer-item">
-        <button type="button" class="button is-danger is-outlined" @onclick="removeTodo">
+        <button type="button" class="button is-danger is-outlined" @onclick="RemoveTodo">
           Delete
         </button>
       </div>
@@ -37,17 +37,14 @@
 @code {
   
   [Parameter]
-  public string Title { get; set; }
-  
+  public Todo Todo { get; set; }
+
   [Parameter]
-  public int TodoNumber { get; set; }  
+  public EventCallback<int> OnRemoveTodo { get; set; }
   
-  [Parameter]
-  public EventCallback<int> onRemoveTodo { get; set; }
-  
-  private async Task removeTodo()
+  private async Task RemoveTodo()
   {
-    await onRemoveTodo.InvokeAsync(TodoNumber);
+    await OnRemoveTodo.InvokeAsync(Todo.Id);
   }
 
 }
