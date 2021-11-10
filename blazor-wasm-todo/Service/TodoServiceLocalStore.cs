@@ -19,7 +19,7 @@ namespace blazor_wasm_todo.Data
             _localStorage = localStorage;
         }
         
-        public async Task<List<Todo>> Load()
+        public async Task<List<Todo>> LoadAll()
         {
             TodoItems = await _localStorage.GetItemAsync<List<Todo>>(TodoItemsStorageKey) ?? new();
             NextTodoItemId = EvaluateNextTodoItemId(TodoItems);
@@ -31,7 +31,7 @@ namespace blazor_wasm_todo.Data
             await _localStorage.SetItemAsync(TodoItemsStorageKey, todoItems);
         }
 
-        public async Task<Todo> SaveTodo(Todo todo)
+        public async Task<Todo> Save(Todo todo)
         {
             todo.id = NextTodoItemId;
             TodoItems.Add(todo);
@@ -40,7 +40,7 @@ namespace blazor_wasm_todo.Data
             return todo;
         }
 
-        public async Task DeleteTodo(int id)
+        public async Task Delete(int id)
         {
             TodoItems.RemoveAll(todo => todo.id == id);
             await Persist(TodoItems);

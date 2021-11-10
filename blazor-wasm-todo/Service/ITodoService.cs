@@ -6,10 +6,10 @@ namespace blazor_wasm_todo.Data
 {
     public interface ITodoService
     {
-        public Task<List<Todo>> Load();
+        public Task<List<Todo>> LoadAll();
 
-        public Task<Todo> SaveTodo(Todo todo);
+        public Task<Todo> Save(Todo todo);
         
-        public Task DeleteTodo(int id);
+        public Task Delete(int id);
     }
 }
