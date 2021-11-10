@@ -4,22 +4,9 @@ using Fluxor;
 
 namespace blazor_wasm_todo.Store
 {
+    [FeatureState]
     public record TodoItemsState
-    { 
-        public List<Todo> TodoItems { get; init; }
-    }
-
-    public class TodoFeatureState : Feature<TodoItemsState>
     {
-        public override string GetName() => nameof(TodoItemsState);
-
-        protected override TodoItemsState GetInitialState()
-        {
-            return new TodoItemsState
-            {
-                TodoItems = new List<Todo>()
-            };
-        }
-
+        public List<Todo> TodoItems { get; init; }
     }
 }
